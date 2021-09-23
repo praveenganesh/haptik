@@ -7,7 +7,7 @@ few steps requires to run this application
 1.Clone the application
 
 ```sh
-$ git clone https://github.com/praveenganesh/TODO.git
+$ git clone https://github.com/praveenganesh/haptik.git
 ```
 
 2.Install the node modules
