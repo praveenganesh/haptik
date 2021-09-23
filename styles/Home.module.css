@@ -113,6 +113,83 @@
   margin-left: 0.5rem;
 }
 
+.box {
+  width: 300px;
+  height: 400px;
+  padding: 10px;
+  background: #f3f3f3;
+}
+.hr {
+  border-bottom: 1px solid gray;
+  padding-bottom: 5px;
+  justify-content: flex-start;
+  align-items: center;
+}
+.title {
+  font-size: 12px;
+  font-weight: bold;
+  text-align: left;
+}
+.input {
+  width: 100%;
+  font-size: 12;
+  font-size: 12px;
+  border: none;
+  padding: 5px;
+  color: black;
+}
+.sortBtn {
+  font-size: 12px;
+  color: #3460e8;
+  font-weight: 600;
+  float: right;
+  cursor: pointer;
+}
+.note {
+  font-size: 12px;
+  color: #bbb4b4;
+  margin-top: 1rem;
+}
+.flexBox {
+  display: flex;
+  justify-content: flex-end;
+}
+.btn {
+  color: #fff;
+  background-color: #f8fbff;
+  border-color: #0d6efd;
+  width: auto;
+  padding: 4px 14px;
+  color: #0d6efd;
+  margin: 0px 1px;
+  font-size: 12px;
+  font-weight: bold;
+}
+.name {
+  font-size: 14px;
+  font-weight: bold;
+  text-transform: uppercase;
+}
+.sub {
+  font-size: 12px;
+  color: #a4a4a4;
+  text-transform: capitalize;
+}
+.friendBox {
+  background: white;
+  margin: 4px 0;
+  padding: 10px;
+  box-shadow: 0 3px 12px rgb(0 0 0 / 2%), 0 3px 8px rgb(0 0 0 / 1%);
+  width: 98%;
+}
+.scrollbox {
+  height: 320px;
+  overflow: scroll;
+  padding: 10px;
+}
+.iconBtn {
+  cursor: pointer;
+}
 @media (max-width: 600px) {
   .grid {
     width: 100%;

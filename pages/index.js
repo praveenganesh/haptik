@@ -1,8 +1,58 @@
-import Head from 'next/head'
-import Image from 'next/image'
-import styles from '../styles/Home.module.css'
+import Head from "next/head";
+import { useEffect, useState } from "react";
+import Image from "next/image";
+import styles from "../styles/Home.module.css";
+import { Row, Col, Button } from "react-bootstrap";
+import { AiOutlineStar, AiFillStar, AiOutlineDelete } from "react-icons/ai";
 
 export default function Home() {
+  const [friends, setFriends] = useState([{ name: "pk", isFavorite: true }]);
+  const [searchList, setSearchList] = useState([]);
+  const [name, setName] = useState("");
+
+  const toggleFavorite = (index) => {
+    let friendsCopy = [...friends];
+    let friend = friendsCopy[index];
+    friend.isFavorite = !friend.isFavorite;
+    friendsCopy[index] = friend;
+    setFriends([...friendsCopy]);
+  };
+  const deleteFriend = (index) => {
+    if (window.confirm("Do you really want to remove your friend?")) {
+      let friendsCopy = [...friends];
+      friendsCopy = friendsCopy.filter((item, i) => i !== index);
+      setFriends([...friendsCopy]);
+    }
+  };
+  const addFriend = () => {
+    let friendsCopy = [...friends];
+    let friend = { name, isFavorite: false };
+    friendsCopy.push(friend);
+    setFriends([...friendsCopy]);
+    setSearchList([]);
+    setName("");
+  };
+
+  const sortByFav = () => {
+    let fav = friends.filter((f) => f.isFavorite);
+    let nonFav = friends.filter((f) => f.isFavorite === false);
+    let friendsCopy = [...fav, ...nonFav];
+    setFriends([...friendsCopy]);
+  };
+
+  const search = (value) => {
+    if (value === "") {
+      setFriends([...friends]);
+      setSearchList([]);
+    } else {
+      let filteredList = friends.filter((f) => f.name.includes(value));
+
+      setSearchList([...filteredList]);
+    }
+  };
+
+  let list = searchList.length > 0 ? [...searchList] : [...friends];
+
   return (
     <div className={styles.container}>
       <Head>
@@ -12,58 +62,99 @@ export default function Home() {
       </Head>
 
       <main className={styles.main}>
-        <h1 className={styles.title}>
-          Welcome to <a href="https://nextjs.org">Next.js!</a>
-        </h1>
-
-        <p className={styles.description}>
-          Get started by editing{' '}
-          <code className={styles.code}>pages/index.js</code>
-        </p>
-
-        <div className={styles.grid}>
-          <a href="https://nextjs.org/docs" className={styles.card}>
-            <h2>Documentation &rarr;</h2>
-            <p>Find in-depth information about Next.js features and API.</p>
-          </a>
-
-          <a href="https://nextjs.org/learn" className={styles.card}>
-            <h2>Learn &rarr;</h2>
-            <p>Learn about Next.js in an interactive course with quizzes!</p>
-          </a>
-
-          <a
-            href="https://github.com/vercel/next.js/tree/master/examples"
-            className={styles.card}
-          >
-            <h2>Examples &rarr;</h2>
-            <p>Discover and deploy boilerplate example Next.js projects.</p>
-          </a>
-
-          <a
-            href="https://vercel.com/new?utm_source=create-next-app&utm_medium=default-template&utm_campaign=create-next-app"
-            className={styles.card}
-          >
-            <h2>Deploy &rarr;</h2>
-            <p>
-              Instantly deploy your Next.js site to a public URL with Vercel.
-            </p>
-          </a>
+        <div className={styles.box}>
+          <Row className={styles.hr}>
+            <Col>
+              <p className={styles.title}>
+                <div>Friends List</div>
+              </p>
+            </Col>
+            <Col>
+              <span onClick={() => sortByFav()} className={styles.sortBtn}>
+                sort favorites
+              </span>
+            </Col>
+          </Row>
+          <Row>
+            <Col md={10} lg={10} sm={10} xs={10} className="p-0">
+              <input
+                className={styles.input}
+                type="text"
+                onChange={(e) => {
+                  setName(e.target.value);
+                  search(e.target.value);
+                }}
+                value={name}
+                placeholder="Enter your friends name"
+              />
+            </Col>{" "}
+            <Col md={2} lg={2} sm={2} xs={2}>
+              <Row className={styles.flexBox}>
+                {/* <Button className={styles.btn}>🔍</Button> */}
+                <Button onClick={() => addFriend()} className={styles.btn}>
+                  Add
+                </Button>
+              </Row>
+            </Col>
+          </Row>
+          <div className={styles.scrollbox}>
+            {list.length > 0 &&
+              list.map((friend, index) => {
+                return (
+                  <Row key={index} className="justify-content-center">
+                    <div className={styles.friendBox}>
+                      <Row className="align-items-center">
+                        <Col md={9} lg={9} sm={9} xs={9}>
+                          <Row>
+                            <span className={styles.name}>{friend.name}</span>
+                          </Row>
+                          <Row>
+                            <span className={styles.sub}>is your friend</span>
+                          </Row>
+                        </Col>
+                        <Col md={3} lg={3} sm={3} xs={3}>
+                          <Row className="justify-content-flex-end">
+                            <Col md={6} lg={6} sm={6} xs={6}>
+                              <span
+                                onClick={() => toggleFavorite(index)}
+                                className={styles.iconBtn}
+                              >
+                                {friend.isFavorite ? (
+                                  <AiFillStar />
+                                ) : (
+                                  <AiOutlineStar />
+                                )}
+                              </span>
+                            </Col>
+                            <Col md={6} lg={6} sm={6} xs={6}>
+                              <span
+                                onClick={() => deleteFriend(index)}
+                                className={styles.iconBtn}
+                              >
+                                <AiOutlineDelete />
+                              </span>
+                            </Col>
+                          </Row>
+                        </Col>
+                      </Row>
+                    </div>
+                  </Row>
+                );
+              })}
+          </div>
         </div>
+        <p className={styles.note}>
+          {" "}
+          Note: Please type name, it will search automatically or you can add
+          the entry
+        </p>
       </main>
 
       <footer className={styles.footer}>
-        <a
-          href="https://vercel.com?utm_source=create-next-app&utm_medium=default-template&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Powered by{' '}
-          <span className={styles.logo}>
-            <Image src="/vercel.svg" alt="Vercel Logo" width={72} height={16} />
-          </span>
+        <a target="_blank" rel="noopener noreferrer">
+          Created by PK
         </a>
       </footer>
     </div>
-  )
+  );
 }
